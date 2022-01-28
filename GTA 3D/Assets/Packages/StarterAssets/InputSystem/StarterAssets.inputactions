@@ -36,6 +36,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Aim",
+                    "type": "PassThrough",
+                    "id": "072dd143-9ba6-4e7a-b2d4-fd59da117de7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -212,6 +220,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "63232475-5145-4744-9ccd-b757068d7b1e",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

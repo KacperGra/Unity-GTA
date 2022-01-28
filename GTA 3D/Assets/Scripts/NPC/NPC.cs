@@ -10,4 +10,10 @@ public class NPC : Human
 
     public HumanAnimationController AnimationController => _animationController;
     public NavMeshAgent Agent => _agent;
+
+    public override void Death()
+    {
+        base.Death();
+        Destroy(gameObject);
+    }
 }

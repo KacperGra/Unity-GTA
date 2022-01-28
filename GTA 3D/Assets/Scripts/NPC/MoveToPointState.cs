@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using DG.Tweening;
 
 public class MoveToPointState : State
 {
@@ -10,49 +11,52 @@ public class MoveToPointState : State
 
     private Transform _currentTarget;
     private bool _firstRun;
+    private bool _setIdle;
+
+    public override void Initalize()
+    {
+        if (_currentTarget != null)
+        {
+            _currentTarget = GameManager.Instance.MapManager.GetNextPoint(_currentTarget);
+        }
+        else
+        {
+            _currentTarget = GameManager.Instance.MapManager.GetNearestPoint(transform);
+        }
+        _npc.Agent.SetDestination(_currentTarget.position);
+
+        _npc.AnimationController.SetSpeed(2f, 1f);
+
+        _firstRun = true;
+        _setIdle = false;
+    }
 
     public override State RunCurrentState()
     {
         if (_firstRun)
         {
             _firstRun = false;
-
-            /*if (_currentTarget != null)
-            {
-                _currentTarget = GameManager.Instance.MapManager.GetNextPoint(_currentTarget);
-            }
-            else
-            {
-                _currentTarget = GameManager.Instance.MapManager.GetNearestPoint(transform);
-            }*/
-
-            if (RandomPoint(transform.position, 5f, out var result))
-            {
-                _npc.Agent.SetDestination(result);
-                _npc.AnimationController.SetSpeed(2f, 1f);
-                return this;
-            }
-
-            //_npc.Agent.SetDestination(_currentTarget.position);
-
-            return _idle;
         }
 
-        Debug.Log(_npc.Agent.remainingDistance);
         if (_npc.Agent.remainingDistance < 1f)
         {
             _npc.Agent.ResetPath();
-
-            ResetState();
             return _idle;
         }
 
         return this;
     }
 
-    private void ResetState()
+    private State MoveToRandomPoint()
     {
-        _firstRun = true;
+        if (RandomPoint(transform.position, 5f, out var result))
+        {
+            _npc.Agent.SetDestination(result);
+            _npc.AnimationController.SetSpeed(2f, 1f);
+            return this;
+        }
+
+        return null;
     }
 
     private static bool RandomPoint(Vector3 center, float range, out Vector3 result)

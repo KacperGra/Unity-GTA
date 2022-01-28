@@ -100,6 +100,7 @@ namespace StarterAssets
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
+        private bool _rotateOnMove = true;
 
         private const float _threshold = 0.01f;
 
@@ -224,7 +225,10 @@ namespace StarterAssets
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
-                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                if (!_rotateOnMove)
+                {
+                    transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                }
             }
 
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
@@ -326,6 +330,11 @@ namespace StarterAssets
 
             // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
             Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
+        }
+
+        public void SetRotateOnMove(bool state)
+        {
+            _rotateOnMove = state;
         }
     }
 

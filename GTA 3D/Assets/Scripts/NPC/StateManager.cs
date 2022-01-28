@@ -6,6 +6,11 @@ public class StateManager : MonoBehaviour
 {
     [SerializeField] private State _currentState;
 
+    private void Awake()
+    {
+        _currentState.Initalize();
+    }
+
     private void Update()
     {
         RunStateMachine();
@@ -22,6 +27,10 @@ public class StateManager : MonoBehaviour
 
     private void SwitchToNextState(State nextState)
     {
+        if (_currentState != nextState)
+        {
+            nextState.Initalize();
+        }
         _currentState = nextState;
     }
 }

@@ -4,5 +4,7 @@ using UnityEngine;
 
 public abstract class State : MonoBehaviour
 {
+    public abstract void Initalize();
+
     public abstract State RunCurrentState();
 }
