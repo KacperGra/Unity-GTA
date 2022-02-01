@@ -12,9 +12,9 @@ public class Entity : MonoBehaviour
         _health = new Statistic(_startingHealth);
     }
 
-    public void TakeDamage(int value)
+    public void TakeDamage(HitInfo hitinfo)
     {
-        _health.ChangeAmount(-value);
+        _health.ChangeAmount(-hitinfo.Damage);
         if (_health.Value <= 0)
         {
             Death();

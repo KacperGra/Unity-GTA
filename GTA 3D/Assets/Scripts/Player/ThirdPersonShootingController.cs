@@ -16,7 +16,8 @@ public class ThirdPersonShootingController : MonoBehaviour
     [SerializeField] private StarterAssets.ThirdPersonController _thirdPersonController;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _debugTransform;
-    [SerializeField] private GameObject _bulletEffect;
+    [SerializeField] private GameObject _bulletNPCHitEffect;
+    [SerializeField] private GameObject _bulletObjectHitEffect;
 
     private Camera _mainCamera;
 
@@ -40,7 +41,6 @@ public class ThirdPersonShootingController : MonoBehaviour
         }
 
         HandleAiming(mouseWorldPosition);
-
         if (Input.GetMouseButtonDown(0) && hitTransform != null)
         {
             Shoot(hitTransform, raycastHit.point);
@@ -72,12 +72,18 @@ public class ThirdPersonShootingController : MonoBehaviour
 
     private void Shoot(Transform hitTransform, Vector3 hitPosition)
     {
-        var bulletTarget = hitTransform.GetComponent<Entity>();
+        var bulletTarget = hitTransform.GetComponent<NPC>();
         if (bulletTarget != null)
         {
-            var bullet = Instantiate(_bulletEffect, hitPosition, Quaternion.identity);
+            var bullet = Instantiate(_bulletNPCHitEffect, hitPosition, Quaternion.identity);
             Destroy(bullet, 1);
-            bulletTarget.TakeDamage(1);
+
+            bulletTarget.TakeDamage(new HitInfo(1));
+        }
+        else
+        {
+            var bullet = Instantiate(_bulletObjectHitEffect, hitPosition, Quaternion.identity);
+            Destroy(bullet, 1);
         }
     }
 }

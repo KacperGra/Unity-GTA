@@ -15,5 +15,9 @@ public class Player : Human
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+        }
     }
 }
